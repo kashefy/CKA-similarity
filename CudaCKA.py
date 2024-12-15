@@ -39,6 +39,17 @@ class CudaCKA(object):
         var2 = torch.sqrt(self.linear_HSIC(Y, Y))
 
         return hsic / (var1 * var2)
+        
+    def linear_CKA2(self, X, Y):
+        # ~ hsic = self.linear_HSIC(X, Y)
+        L_Xc = self.centering(torch.matmul(X, X.T))
+        L_Yc = self.centering(torch.matmul(Y, Y.T))
+        hsic_xy = torch.sum(L_Xc * L_Yc)
+        
+        var1 = torch.sqrt(np.sum(L_Xc * L_Xc))
+        var2 = torch.sqrt(np.sum(L_Yc * L_Yc))
+
+        return hsic_xy / (var1 * var2)
 
     def kernel_CKA(self, X, Y, sigma=None):
         hsic = self.kernel_HSIC(X, Y, sigma)
