@@ -4,16 +4,17 @@
 import math
 import torch
 
+
 class CudaCKA(object):
     def __init__(self, device):
         self.device = device
-    
+
     def centering(self, K):
         n = K.shape[0]
         unit = torch.ones([n, n], device=self.device)
         I = torch.eye(n, device=self.device)
         H = I - unit / n
-        return torch.matmul(torch.matmul(H, K), H)  
+        return torch.matmul(torch.matmul(H, K), H)
 
     def rbf(self, X, sigma=None):
         GX = torch.matmul(X, X.T)
@@ -30,6 +31,8 @@ class CudaCKA(object):
 
     def linear_HSIC(self, X, Y):
         L_X = torch.matmul(X, X.T)
+        print('L_Xtorch')
+        print(L_X)
         L_Y = torch.matmul(Y, Y.T)
         return torch.sum(self.centering(L_X) * self.centering(L_Y))
 
@@ -39,13 +42,14 @@ class CudaCKA(object):
         var2 = torch.sqrt(self.linear_HSIC(Y, Y))
 
         return hsic / (var1 * var2)
-        
+
     def linear_CKA2(self, X, Y):
-        # ~ hsic = self.linear_HSIC(X, Y)
         L_Xc = self.centering(torch.matmul(X, X.T))
+        print('L_Xc')
+        print(L_Xc)
         L_Yc = self.centering(torch.matmul(Y, Y.T))
         hsic_xy = torch.sum(L_Xc * L_Yc)
-        
+
         var1 = torch.sqrt(torch.sum(L_Xc * L_Xc))
         var2 = torch.sqrt(torch.sum(L_Yc * L_Yc))
 
