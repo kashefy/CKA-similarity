@@ -8,6 +8,7 @@ import torch
 class CudaCKA(object):
     def __init__(self, device):
         self.device = device
+        print("CudaCKA: self.device", self.device)
 
     def centering(self, K):
         n = K.shape[0]
@@ -37,6 +38,7 @@ class CudaCKA(object):
         return torch.sum(self.centering(L_X) * self.centering(L_Y))
 
     def linear_CKA(self, X, Y):
+        print('lin')
         hsic = self.linear_HSIC(X, Y)
         var1 = torch.sqrt(self.linear_HSIC(X, X))
         var2 = torch.sqrt(self.linear_HSIC(Y, Y))
