@@ -31,6 +31,7 @@ class CudaCKA(object):
         return torch.sum(self.centering(self.rbf(X, sigma)) * self.centering(self.rbf(Y, sigma)))
 
     def linear_HSIC(self, X, Y):
+        print('CudaCKA.linear_HSIC')
         L_X = torch.matmul(X, X.T)
         print('L_Xtorch')
         print(L_X)
