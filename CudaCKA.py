@@ -39,7 +39,7 @@ class CudaCKA(object):
         return torch.sum(self.centering(L_X) * self.centering(L_Y))
 
     def linear_CKA(self, X, Y):
-        print('lin')
+        print('CudaCKA.linear_CKA')
         hsic = self.linear_HSIC(X, Y)
         var1 = torch.sqrt(self.linear_HSIC(X, X))
         var2 = torch.sqrt(self.linear_HSIC(Y, Y))
